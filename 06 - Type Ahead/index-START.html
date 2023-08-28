@@ -1,23 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Type Ahead 👀</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="https://fav.farm/🔥" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Type Ahead 👀</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <form class="search-form">
+      <input type="text" class="search" placeholder="City or State" />
+      <ul class="suggestions">
+        <li>Filter for a city</li>
+        <li>or a state</li>
+      </ul>
+    </form>
+    <script>
+      const endpoint =
+        "https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json";
 
-  <form class="search-form">
-    <input type="text" class="search" placeholder="City or State">
-    <ul class="suggestions">
-      <li>Filter for a city</li>
-      <li>or a state</li>
-    </ul>
-  </form>
-<script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+      const places = [];
+      const promise = fetch(endpoint)
+        .then((blob) => blob.json())
+        .then((data) => places.push(...data));
 
-</script>
-</body>
+      const findPlaces = (inputWord, places) => {
+        return places.filter((place) => {
+          const regex = new RegExp(inputWord, "gi");
+          return place.city.match(regex) || place.state.match(regex);
+        });
+      };
+
+      const displaySuggestions = (event) => {
+        const inputValue = event.target.value;
+        const matchedPlacesArray = findPlaces(inputValue, places);
+        const placesHtml = matchedPlacesArray
+          .map((place) => {
+            const regex = new RegExp(inputValue, "gi");
+            const highlightedCityHtml = place.city.replace(
+              regex,
+              `<span class="hl">${inputValue}</span>`
+            );
+            const highlightedStateHtml = place.state.replace(
+              regex,
+              `<span class="hl">${inputValue}</span>`
+            );
+            return `
+            <li>
+              <span class="name">${highlightedCityHtml}, ${highlightedStateHtml}</span>
+              <span class="population">${numberWithCommas(
+                place.population
+              )}</span> 
+            </li>`;
+          })
+          .join("");
+        document.querySelector(".suggestions").innerHTML = placesHtml;
+      };
+
+      function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+
+      document
+        .querySelector(".search")
+        .addEventListener("keyup", displaySuggestions);
+      document
+        .querySelector(".search")
+        .addEventListener("onChange", displaySuggestions);
+    </script>
+  </body>
 </html>

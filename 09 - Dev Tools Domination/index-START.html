@@ -19,28 +19,67 @@
     }
 
     // Regular
+    console.log("Hello World");
 
     // Interpolated
+    const text = 'Wohooo.......'
+    console.log(`Hey! This is a interpolated string written with ES6 template literal ${text}`, );
+    console.log('Hey! This is a interpolated string written with %s string quotes', 'boring');
 
     // Styled
+    console.log('%c This is a styled text', 'font-size: 20px; color: green');
 
     // warning!
+    console.warn("Alert! Danger ahead. PS: Just Kidding 😂")
 
     // Error :|
+    console.error("Ooooops! This is an error...");
 
     // Info
+    console.info("No serious info available 😂")
 
     // Testing
+    const p = document.querySelector('p');
+    console.assert(p.classList.contains('testing-class'), "The test case failed!!!! for testing class");
 
     // clearing
+    // console.clear();
 
     // Viewing DOM Elements
+    console.dir(p);
 
     // Grouping together
+    dogs.forEach(dog => {
+      console.groupCollapsed(`${dog.name}`);
+      console.log(`Meet ${dog.name}! It's a dog`);
+      console.log(`${dog.name} is ${dog.age} years old`);
+      console.groupEnd(`${dog.name}`);
+    })
 
     // counting
+    console.count("I");
+    console.count("am")
+    console.count("am")
+    console.count("I");
+    console.count("I");
+    console.count("counting");
+    console.count("counting");
+    console.count("am");
+    console.count("am");
+    console.count("counting");
+    console.count("I");
+    console.count("counting");
 
     // timing
+    console.time("I am using console.time");
+    fetch('https://api.github.com/users/faizan-aka')
+      .then(data => data.json())
+      .then(data => {
+        console.timeEnd('I am using console.time');
+        console.log(data);
+      });
+
+    console.table(dogs);
 
   </script>
 </body>
