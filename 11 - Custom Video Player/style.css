@@ -160,3 +160,12 @@ input[type=range]::-moz-range-thumb {
   background: #ffc600;
   cursor: pointer;
 }
+
+.full__screen{
+  max-width: 60px;
+  background: initial;
+  color: white;
+  border: 0;
+}
+
+
