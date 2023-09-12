@@ -52,12 +52,17 @@
         <input type="text" name="item" placeholder="Item Name" required />
         <input type="submit" value="+ Add Item" />
       </form>
+      <div class="reset-buttons">
+        <button class="check">Check All</button>
+        <button class="un-check">UnCheck All</button>
+      </div>
     </div>
 
     <script>
       const addItems = document.querySelector(".add-items");
       const itemsList = document.querySelector(".plates");
       const items = JSON.parse(localStorage.getItem("items")) || [];
+      const reset = document.querySelector(".reset-buttons");
 
       const handleSubmit = (event) => {
         event.preventDefault();
@@ -85,7 +90,7 @@
       };
 
       const handleClick = (event) => {
-        if(!event.target.matches("input")){
+        if (!event.target.matches("input")) {
           return;
         }
         const index = event.target.dataset.index;
@@ -94,8 +99,28 @@
         populateList(items, itemsList);
       };
 
+      const handleCheckUncheckAll = (event) => {
+        console.log(event.target);
+        if (event.target.classList.contains("check")){
+          handleCheckButtonClick(true);
+        }
+        else if(event.target.classList.contains("un-check")){
+          handleCheckButtonClick(false);
+        }
+      }
+
+      const handleCheckButtonClick = (value) => {
+        items.forEach(item => {
+          item.done = value;
+        });
+        localStorage.setItem("items", JSON.stringify(items));
+        populateList(items, itemsList);
+      }
+
       itemsList.addEventListener("click", handleClick);
       addItems.addEventListener("submit", handleSubmit);
+      reset.addEventListener("click", handleCheckUncheckAll);
+
       populateList(items, itemsList);
     </script>
   </body>
